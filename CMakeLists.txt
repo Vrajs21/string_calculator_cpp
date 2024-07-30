@@ -39,4 +39,20 @@ target_link_libraries(string_calculator_test
 enable_testing()
 
 # Add tests
-add_test(NAME StringCalculatorTests COMMAND string_calculator_test)
+add_test(
+    NAME StringCalculatorTests
+    COMMAND string_calculator_test
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+# Set test properties for more informative output
+set_tests_properties(
+    StringCalculatorTests
+    PROPERTIES
+    RUN_SERIAL true
+    PASS_REGULAR_EXPRESSION "OK"
+    FAIL_REGULAR_EXPRESSION "FAIL"
+)
+
+# Output test results in a more informative format
+set(CMAKE_TESTING_OUTPUT_FORMAT "Verbose")
