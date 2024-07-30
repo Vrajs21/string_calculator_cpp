@@ -43,6 +43,8 @@ GTEST_TEST(StringCalculatorTest, single_negative_number) {
     }, std::invalid_argument);
 }
 
+
+
 GTEST_TEST(StringCalculatorTest, multiple_negative_numbers) {
     try {
         StringCalculator::add("-1,2,-3,4,-5");
@@ -50,6 +52,11 @@ GTEST_TEST(StringCalculatorTest, multiple_negative_numbers) {
     } catch(std::invalid_argument const & err) {
         EXPECT_EQ(err.what(), std::string("negative numbers not allowed -1,-3,-5"));
     }
+}
+
+
+GTEST_TEST(StringCalculatorTest, Handles_Custom_Delimiter_With_Multiple_Characters) {
+    EXPECT_EQ(6, StringCalculator::add("//[***]\n1***2***3"));
 }
 
 

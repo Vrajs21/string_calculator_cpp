@@ -16,32 +16,37 @@ int StringCalculator::add(const string &numbers)
     }
 
     string input = numbers;
-    char delimiter = ',';
+    string  delimiter = ",";
     vector<int> negatives;
     int sum = 0;
 
     if (numbers.substr(0, 2) == "//")
     {
         size_t pos = numbers.find("\n");
-        delimiter = numbers[2];
+        if (numbers[2] == '[' && numbers.find(']', 2) != std::string::npos) {
+            delimiter = numbers.substr(3, numbers.find(']', 2) - 3);
+        } else {
+            delimiter = numbers[2];
+        }
         input = numbers.substr(pos + 1);
     }
 
-    stringstream ss(input);
-    string token;
 
-    while (getline(ss, token, '\n'))
+    string delimiters_regex = regex_replace(delimiter, regex(R"([.^$|()\\[\]{}*+?])"), R"(\$&)");
+    delimiters_regex = "(" + delimiters_regex + "|\n)";
+    regex re(delimiters_regex);
+
+    sregex_token_iterator first{input.begin(), input.end(), re, -1}, last;
+    vector<std::string> tokens{first, last};
+    
+
+    for (const auto& token : tokens)
     {
-        stringstream line_ss(token);
-        string num_str;
-
-        while (getline(line_ss, num_str, delimiter))
-        {
-            if (!num_str.empty())
+            if (!token.empty())
             {
                 try
                 {
-                    int num = stoi(num_str);
+                    int num = stoi(token);
                     if (num < 0)
                     {
                         negatives.push_back(num);
@@ -49,15 +54,15 @@ int StringCalculator::add(const string &numbers)
                     else if (num <= 1000)
                     {
                         sum += num;
-                    }
+                    }   
                 }
                 catch (const invalid_argument &)
                 {
-                    throw invalid_argument("Invalid input: " + num_str);
+                    throw invalid_argument("Invalid input: " + token);
                 }
             }
         }
-    }
+    
 
     if (!negatives.empty())
     {
