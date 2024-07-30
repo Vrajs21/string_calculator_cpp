@@ -26,6 +26,10 @@ GTEST_TEST(StringCalculatorTest, MixedNumbers) {
     EXPECT_EQ(0, StringCalculator::add("1,-1"));
 }
 
+GTEST_TEST(StringCalculatorTest,Allow_newline_opereator) {
+    EXPECT_EQ(99, StringCalculator::add("100\n-1"));
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

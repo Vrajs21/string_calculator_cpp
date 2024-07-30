@@ -18,11 +18,11 @@ int StringCalculator::add(const string& numbers) {
     int sum = 0;
     int num = 0;
     bool negative = false;
-
+    
     for (char c : numbers) {
         if (c == '-') {
             negative = true;
-        } else if (c == ',') {
+        } else if (c == ',' || c=='\n') {
             sum += negative ? -num : num;
             num = 0;
             negative = false;
