@@ -18,22 +18,38 @@ GTEST_TEST(StringCalculatorTest, MultipleNumbers) {
     EXPECT_EQ(15, StringCalculator::add("1,2,3,4,5"));
 }
 
-GTEST_TEST(StringCalculatorTest, NegativeNumbers) {
-    EXPECT_EQ(-5, StringCalculator::add("-1,-4"));
-}
-
-GTEST_TEST(StringCalculatorTest, MixedNumbers) {
-    EXPECT_EQ(0, StringCalculator::add("1,-1"));
-}
-
 GTEST_TEST(StringCalculatorTest,Allow_newline_opereator) {
-    EXPECT_EQ(99, StringCalculator::add("100\n-1"));
+    EXPECT_EQ(101, StringCalculator::add("100\n1"));
 }
 GTEST_TEST(StringCalculatorTest,is_custom_delimeter_is_allowed) {
     EXPECT_EQ(16, StringCalculator::add("//;\n7\n1;8"));
 }
 GTEST_TEST(StringCalculatorTest,is_custom_delimeter_is_allowed_2) {
     EXPECT_EQ(30, StringCalculator::add("//;\n18;10;2"));
+}
+
+
+GTEST_TEST(StringCalculatorTest, custom_delimiter_single_number) {
+    EXPECT_EQ(42, StringCalculator::add("//?\n42"));
+}
+
+GTEST_TEST(StringCalculatorTest, custom_delimiter_empty_after_newline) {
+    EXPECT_EQ(0, StringCalculator::add("//+\n"));
+}
+
+GTEST_TEST(StringCalculatorTest, single_negative_number) {
+    EXPECT_THROW({
+        StringCalculator::add("-1");
+    }, std::invalid_argument);
+}
+
+GTEST_TEST(StringCalculatorTest, multiple_negative_numbers) {
+    try {
+        StringCalculator::add("-1,2,-3,4,-5");
+        FAIL() << "Expected std::invalid_argument";
+    } catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("negative numbers not allowed -1,-3,-5"));
+    }
 }
 
 
