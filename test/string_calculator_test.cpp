@@ -29,6 +29,13 @@ GTEST_TEST(StringCalculatorTest, MixedNumbers) {
 GTEST_TEST(StringCalculatorTest,Allow_newline_opereator) {
     EXPECT_EQ(99, StringCalculator::add("100\n-1"));
 }
+GTEST_TEST(StringCalculatorTest,is_custom_delimeter_is_allowed) {
+    EXPECT_EQ(16, StringCalculator::add("//;\n7\n1;8"));
+}
+GTEST_TEST(StringCalculatorTest,is_custom_delimeter_is_allowed_2) {
+    EXPECT_EQ(30, StringCalculator::add("//;\n18;10;2"));
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

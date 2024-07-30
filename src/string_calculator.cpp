@@ -11,18 +11,26 @@ int StringCalculator::add(const string& numbers) {
     }
 
     if(numbers.length()==1 && isdigit(numbers[0]))
-        return stoi(numbers.substr(0));
+        return (numbers[0]-'0');
     
    
-
+    string duplicate_input=numbers;
     int sum = 0;
     int num = 0;
     bool negative = false;
+    char delimiter = ','; 
     
-    for (char c : numbers) {
+    // handle custom delimiter
+     if (numbers.find("//") == 0) {
+        size_t pos = numbers.find("\n");
+        delimiter = numbers[2]; 
+        duplicate_input = numbers.substr(pos + 1);
+    }
+    
+    for (char c : duplicate_input) {
         if (c == '-') {
             negative = true;
-        } else if (c == ',' || c=='\n') {
+        } else if (c == delimiter || c=='\n') {
             sum += negative ? -num : num;
             num = 0;
             negative = false;
