@@ -54,9 +54,27 @@ GTEST_TEST(StringCalculatorTest, multiple_negative_numbers) {
     }
 }
 
+GTEST_TEST(StringCalculatorTest, multiple_negative_numbers_2) {
+    try {
+        StringCalculator::add("//[*][%]\n1*-2%3");
+        FAIL() << "Expected std::invalid_argument";
+    } catch(std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("negative numbers not allowed -2"));
+    }
+}
+
 
 GTEST_TEST(StringCalculatorTest, Handles_Custom_Delimiter_With_Multiple_Characters) {
     EXPECT_EQ(6, StringCalculator::add("//[***]\n1***2***3"));
+}
+
+GTEST_TEST(StringCalculatorTest, HandlesMultipleDelimiters) {
+    EXPECT_EQ(6, StringCalculator::add("//[*][%]\n1*2%3"));
+}
+
+
+GTEST_TEST(StringCalculatorTest, HandlesMultipleDelimitersWithLengthLongerThanOneChar) {
+    EXPECT_EQ(10, StringCalculator::add("//[***][%%%]\n1***2%%%3***4"));
 }
 
 
